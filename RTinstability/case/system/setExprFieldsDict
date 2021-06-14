@@ -1,0 +1,50 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  v2006                                 |
+|   \\  /    A nd           | Website:  www.openfoam.com                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      setExprFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+// This creates the initial state, which is a bit more complex in this case. 
+// MAKE SURE YOU ARE RUNNING OpenFOAM 1912 OR LATER TO USE THIS. OTHERWISE FIND ANOTHER WAY TO INITIALIZE (funkysetfields, for instance).
+
+expressions
+(
+    alpha.water
+    {
+        field       alpha.water;
+        dimensions  [0 0 0 0 0 0 0];
+
+//        constants
+//        {
+//        }
+
+        variables // The value of d can be changed (wisely). Original is 4 mm
+        (
+            "d = 0.004"
+            "Arg = 2*pi()/d"
+
+        );
+
+        condition // where this condition is met...
+        #{
+            (pos().z() > 2*d - 0.1*d*cos(Arg*pos().x()))
+        #};
+
+        expression // ... this expression is set (on alpha.water)
+        #{
+            1
+        #};
+    }
+);
+
+// ************************************************************************* //

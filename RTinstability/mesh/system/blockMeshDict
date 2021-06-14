@@ -1,0 +1,94 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;
+
+// The domain is a 4x16 mm. rectangle, made 2D by the "empty" boundary condition. Thus, the y-dimension is just 1 cell long.
+
+vertices
+(
+    ( -0.002 0 0) //Vertex 0
+    (  0.002 0 0) //Vertex 1
+    (  0.002  0.00002 0) //Vertex 2
+    ( -0.002  0.00002 0) //Vertex 3
+    ( -0.002 0 0.016) //Vertex 4
+    (  0.002 0 0.016) //Vertex 5
+    (  0.002  0.00002 0.016) //Vertex 6
+    ( -0.002  0.00002 0.016) //Vertex 7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (201 1 801) simpleGrading (1 1 1)
+);
+
+edges
+(
+);
+
+boundary
+(
+    top
+    {
+    	type patch;
+    	faces
+    	(
+    		(4 5 6 7)
+    	);
+    }
+
+    bottom
+    {
+    	type patch;
+    	faces
+    	(
+     		(3 2 1 0)
+     	);
+    }
+
+    sideRight
+    {
+    	type cyclic;
+    	neighbourPatch sideLeft;
+    	faces
+    	(
+     		(1 2 6 5)
+    	);
+    }
+    
+    sideLeft
+    {
+    	type cyclic;
+    	neighbourPatch sideRight;
+    	faces
+    	(
+     		(0 4 7 3)
+    	);
+    }
+    
+    frontback
+    {
+    	type empty;
+    	faces
+    	(
+     		(0 1 5 4)
+     		(3 7 6 2)
+     	);
+    }
+
+);
+
+// ************************************************************************* //
