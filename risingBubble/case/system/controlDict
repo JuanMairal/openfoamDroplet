@@ -1,0 +1,63 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      controlDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+application     interFoam;
+
+startFrom       latestTime;
+
+startTime       0;
+
+stopAt          endTime;
+
+endTime         0.10096375546923; // These numbers can be changed-
+
+deltaT          0.00000201927510938461; // Initial time step, changes depending on Co number.
+
+writeControl    adjustableRunTime; // Allows time-step to change depending on Co
+
+writeInterval   0.00201927510938461; // When data is written.
+
+purgeWrite      0;
+
+writeFormat     ascii;
+
+writePrecision  6;
+
+writeCompression uncompressed;
+
+timeFormat      general;
+
+timePrecision   6;
+
+runTimeModifiable yes;//adjustableRunTime can modifiy the time step size
+
+adjustTimeStep  yes;//adjustableRunTime can modifiy the time step size
+
+//JN: Co = U*dt/dx
+//U is defined by the flow
+//dx is defined by the cell size i.e. the mesh
+//Co should be below or equal to 1
+//dt is the only value, which can guarantee this
+//dt is changed in each time step
+
+maxCo           0.95;//maximum value for Courant number
+maxAlphaCo      0.95;//maximum value for Courant number of the interface water/air
+
+maxDeltaT       1;//maximum time step
+
+
+// ************************************************************************* //

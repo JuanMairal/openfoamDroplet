@@ -1,0 +1,93 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;
+
+// Very basic domain is created here. It is 3D but y length is small and just 1 cell. Will be made 2D by boundary condition "empty". 2D dimensions are 8x8 mm.
+vertices
+(
+    ( -0.004 0 0) //Vertex 0
+    (  0.004 0 0) //Vertex 1
+    (  0.004  0.000025 0) //Vertex 2
+    ( -0.004  0.000025 0) //Vertex 3
+    ( -0.004 0 0.008) //Vertex 4
+    (  0.004 0 0.008) //Vertex 5
+    (  0.004  0.000025 0.008) //Vertex 6
+    ( -0.004  0.000025 0.008) //Vertex 7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (321 1 321) simpleGrading (1 1 1)//321x321 is what we refer as "Standard grid".
+);
+
+edges
+(
+);
+
+boundary
+(
+    top
+    {
+    	type patch;
+    	faces
+    	(
+    		(4 5 6 7)
+    	);
+    }
+
+    bottom
+    {
+    	type patch;
+    	faces
+    	(
+     		(3 2 1 0)
+     	);
+    }
+
+    sideRight
+    {
+    	type cyclic; // This boundary condition gives the periodic behaviour at the sides.
+    	neighbourPatch sideLeft;
+    	faces
+    	(
+     		(1 2 6 5)
+    	);
+    }
+    
+    sideLeft
+    {
+    	type cyclic; // This boundary condition gives the periodic behaviour at the sides.
+    	neighbourPatch sideRight;
+    	faces
+    	(
+     		(0 4 7 3)
+    	);
+    }
+    
+    frontback
+    {
+    	type empty; // This boundary condition makes the domain 2D.
+    	faces
+    	(
+     		(0 1 5 4)
+     		(3 7 6 2)
+     	);
+    }
+
+);
+
+// ************************************************************************* //
