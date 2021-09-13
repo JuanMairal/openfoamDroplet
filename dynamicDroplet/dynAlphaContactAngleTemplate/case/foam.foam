@@ -1,0 +1,10 @@
+
+For parallel simulations: 
+- rm -r constant/polyMesh
+- cp -r ../mesh/constant/polyMesh constant
+- cp 0/alpha.water.orig 0/alpha.water
+- setFields
+- decomposePar
+- mpirun -np 4 interFoam -parallel > log.interFoam &
+- reconstructPar
+
