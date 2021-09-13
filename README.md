@@ -8,7 +8,7 @@ I appreciate the help and guidance I have received from Dr. Lennon O'Naraigh fro
 
 
 This repository contains, for now, a series of 2D OpenFOAM cases, whose aim is to validate the methods and algorithms that are being used. The Rayleigh-Taylor instability and rising bubble cases were develped as both training for me and validation for this method. The falling droplet is the most important case here. Two contact angle conditions are tested and their templates are included here. They are
--The constant angle contact condition, which mantains the ccontact angle constant during the whole simulation. The value of the equilibrium angle can be changed at mesh/alpha.water.orig
+-The constant angle contact condition, which mantains the contact angle constant during the whole simulation. The value of the equilibrium angle can be changed at mesh/alpha.water.orig
 -The dynamicAlphaContactAngle condition, which is the only dynamic angle condition offered in OpenFOAM by default. The template includes some default values that have been tested and work quite well. They can be changed in the alpha.water.orig file.
 Both droplet templates use a 1280x320 mesh in a 0.072x0.018 mm domain. The droplet has a radius of 3 mm and the fluid properties are as follow:
 
