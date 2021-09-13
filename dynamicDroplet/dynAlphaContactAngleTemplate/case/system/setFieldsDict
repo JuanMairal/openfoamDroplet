@@ -1,0 +1,42 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    location    "system";
+    object      setFieldsDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+
+defaultFieldValues
+(
+    volScalarFieldValue alpha.water 0//only air in the domain
+    volVectorFieldValue U (0 0 0) // reset velocity in the whole domain
+    volScalarFieldValue p_rgh 0//
+);
+
+regions
+(
+    cylinderToCell
+    {
+        p1 (0 0 0.012);
+        p2 (0 0.00005625 0.012);
+        radius 0.003;
+        fieldValues
+        (
+            volScalarFieldValue alpha.water 1//we set our cylinder of water into the domain
+            volVectorFieldValue U (0 0 0) //JM: This is the initial velocity of the droplet, an estimate of its free-fall terminal velocity
+        );
+    }
+);
+
+
+// ************************************************************************* //
