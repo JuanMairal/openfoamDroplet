@@ -1,0 +1,47 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       volScalarField;
+    object      alpha.water;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+dimensions      [0 0 0 0 0 0 0];//kg m s K mol A cd
+
+internalField   uniform 0;//initially air in the entire domain - we will change that with setFields!
+
+boundaryField
+{
+    top
+    {
+        type            zeroGradient;
+    }
+    bottom
+    {
+        type           constantAlphaContactAngle; // Wetting condition is static contact angle
+        theta0         90;
+        limit          gradient;
+        value          uniform 0;
+    }
+    sideRight
+    {
+        type            cyclic;
+    }
+    sideLeft
+    {
+        type            cyclic;
+    }
+    frontback
+    {
+        type            empty;
+    }
+}
+// ************************************************************************* //

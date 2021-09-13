@@ -1,0 +1,96 @@
+/*--------------------------------*- C++ -*----------------------------------*\
+| =========                 |                                                 |
+| \\      /  F ield         | OpenFOAM: The Open Source CFD Toolbox           |
+|  \\    /   O peration     | Version:  4.0                                   |
+|   \\  /    A nd           | Web:      www.OpenFOAM.org                      |
+|    \\/     M anipulation  |                                                 |
+\*---------------------------------------------------------------------------*/
+FoamFile
+{
+    version     2.0;
+    format      ascii;
+    class       dictionary;
+    object      blockMeshDict;
+}
+// * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * //
+
+convertToMeters 1;
+
+// Create a square domain 18x18 mm. y-dimension is removed by "empty" condition. Change y length so it is equal to the side of one cell (0.0018 / number of cells in z).
+
+vertices
+(
+    ( -0.036 0 0) //Vertex 0
+    (  0.036 0 0) //Vertex 1
+    (  0.036  0.00005625 0) //Vertex 2
+    ( -0.036  0.00005625 0) //Vertex 3
+    ( -0.036 0 0.018) //Vertex 4
+    (  0.036 0 0.018) //Vertex 5
+    (  0.036  0.00005625 0.018) //Vertex 6
+    ( -0.036  0.00005625 0.018) //Vertex 7
+);
+
+blocks
+(
+    hex (0 1 2 3 4 5 6 7) (1280	1 320) simpleGrading (1 1 1)// 161x161 is the coarse grid. 321x321 is standard. 641x641 is fine.
+);
+
+edges
+(
+);
+
+boundary
+(
+    top
+    {
+    	type patch;
+    	faces
+    	(
+    		(4 5 6 7)
+    	);
+    }
+
+    bottom
+    {
+    	type patch;
+    	faces
+    	(
+     		(3 2 1 0)
+     	);
+    }
+
+    sideRight
+    {
+    	type cyclic;
+    	neighbourPatch sideLeft;
+    	faces
+    	(
+     		(1 2 6 5)
+    	);
+    }
+    
+    sideLeft
+    {
+    	type cyclic;
+    	neighbourPatch sideRight;
+    	faces
+    	(
+     		(0 4 7 3)
+    	);
+    }
+    
+    
+    
+    frontback
+    {
+    	type empty;
+    	faces
+    	(
+     		(0 1 5 4)
+     		(3 7 6 2)
+     	);
+    }
+
+);
+
+// ************************************************************************* //

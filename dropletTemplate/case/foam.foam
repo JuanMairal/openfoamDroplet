@@ -1,0 +1,9 @@
+For parallel simulations: 
+
+- rm -r constant/polyMesh 				// DELETE CURRENT MESH
+- cp -r ../mesh/constant/polyMesh constant 		// COPY NEW MESH FROM MESH FILE
+- cp 0/alpha.water.orig 0/alpha.water			// RESET INITIAL CONDITION ON VOLUME FRACTION
+- setFields						// CREATE INITIAL CONDITION
+- decomposePar						// DECOMPOSE THE DOMAIN FOR PARALLEL SIMULATION
+- mpirun -np 8 interFoam -parallel > log.interFoam &	// EXECUTE INTERFOAM IN PARALLEL WITH 8 CORES
+- reconstructPar					// RECONSTRUCT THE DOMAIN TO READ WITH PARAVIEW
